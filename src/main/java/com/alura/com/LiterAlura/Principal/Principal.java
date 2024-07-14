@@ -52,7 +52,7 @@ public class Principal {
                 case 9:
                     break;
                 case 0:
-                    System.out.println("Thank you for using LiterAlura! \nExiting program...");
+                    System.out.println("Thank you for using LiterAlura! \nEzxiting program...");
                     break;
                 default:
                     System.out.println("Invalid option selected!");
