@@ -11,7 +11,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String tittle;
+    private String title;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
@@ -22,7 +22,7 @@ public class Book {
     }
 
     public Book(String tittle, Author author, List<String> languages, Double downloads) {
-        this.tittle = tittle;
+        this.title = tittle;
         this.author = author;
         this.language = languages != null && !languages.isEmpty() ? String.join(",", languages) : null;
         this.downloads = OptionalDouble.of(downloads).orElse(0);
@@ -35,11 +35,11 @@ public class Book {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public Author getAuthor() {
         return author;
@@ -70,6 +70,6 @@ public class Book {
                 Downloads: %d
                 -------------------
                 """;
-        return String.format(bookInfo, tittle, author.getName(), language, downloads);
+        return String.format(bookInfo, title, author.getName(), language, downloads);
     }
 }

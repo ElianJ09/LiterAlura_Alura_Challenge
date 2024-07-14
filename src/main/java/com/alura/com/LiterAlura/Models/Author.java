@@ -77,7 +77,7 @@ public class Author {
                 """;
 
         String bookFormat = books.stream()
-                .map(book -> book.getTittle())
+                .map(book -> book.getTitle())
                 .collect(Collectors.joining(", "));
 
         return String.format(authorInfo, name, dateOfBirth, dateOfDeath, bookFormat);
