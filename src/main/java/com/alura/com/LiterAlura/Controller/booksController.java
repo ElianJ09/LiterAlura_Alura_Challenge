@@ -1,7 +1,7 @@
 package com.alura.com.LiterAlura.Controller;
 
 import com.alura.com.LiterAlura.DTO.BookDTO;
-import com.alura.com.LiterAlura.Services.serviceAPIBook;
+import com.alura.com.LiterAlura.Services.APIServices.APIBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/books")
 public class booksController {
     @Autowired
-    private serviceAPIBook booksService;
+    private APIBookService booksService;
 
     @GetMapping()
     public List<BookDTO> getBooks(){

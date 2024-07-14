@@ -1,4 +1,4 @@
-package com.alura.com.LiterAlura.Services;
+package com.alura.com.LiterAlura.Services.APIServices;
 
 import com.alura.com.LiterAlura.DTO.BookDTO;
 import com.alura.com.LiterAlura.Models.Book;
@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class serviceAPIBook {
+public class APIBookService {
     @Autowired
     private bookRepository booksRepository;
 
     public List<BookDTO> getBooks() {
-        return dataConversor(booksRepository.findAll());
+        return dataConverse(booksRepository.findAll());
     }
 
-    public List<BookDTO> dataConversor(List<Book> books) {
+    public List<BookDTO> dataConverse(List<Book> books) {
         return books.stream()
                 .map(book -> new BookDTO(
                         book.getId(),
