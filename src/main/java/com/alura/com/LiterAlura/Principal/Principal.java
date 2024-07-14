@@ -34,7 +34,7 @@ public class Principal {
                             b)  If you want to exit the program select 0
                     ________________________________________________________
                     
-                    1   -   Search a book with the Title 
+                    1   -   Search a book with the Title
                     2   -   Registered Books list
                     3   -   Registered Authors list
                     4   -   Living authors List by a certain date (year)
@@ -45,7 +45,7 @@ public class Principal {
                     6   -   Search Author by name
                     7   -   Top 10 books from the API (online)
                     8   -   Top 5 books from the DataBase
-                    9   -   Authors of public law                                  
+                    9   -   Authors of public law
                     0   -   Exit the program
                     """;
             System.out.println(menu);
@@ -71,7 +71,7 @@ public class Principal {
                 case 9:
                     break;
                 case 0:
-                    System.out.println("Thank you for using LiterAlura! \nEzxiting program...");
+                    System.out.println("Thank you for using LiterAlura! \nExiting program...");
                     break;
                 default:
                     System.out.println("Invalid option selected!");
