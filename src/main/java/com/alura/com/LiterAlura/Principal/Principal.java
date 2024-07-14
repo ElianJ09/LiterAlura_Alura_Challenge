@@ -1,10 +1,29 @@
 package com.alura.com.LiterAlura.Principal;
 
+import com.alura.com.LiterAlura.Models.Author;
+import com.alura.com.LiterAlura.Models.Book;
+import com.alura.com.LiterAlura.Repositories.authorRepository;
+import com.alura.com.LiterAlura.Repositories.bookRepository;
+
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
     private Scanner scanner = new Scanner(System.in);
-    public void muestraElMenu() {
+    private final String urlAPI = "https://gutendex.com/books/";
+    private bookRepository booksRepository;
+    private authorRepository authorsRepository;
+    private List<Book> books;
+    private List<Author> authors;
+    private Optional<Author> searchedAuthor;
+
+    public Principal(bookRepository booksRepository, authorRepository athosRepository) {
+        this.booksRepository = booksRepository;
+        this.authorsRepository = athosRepository;
+    }
+
+    public void showMenu() {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
