@@ -11,16 +11,17 @@ import com.alura.com.LiterAlura.Services.authorDataConversor;
 import com.alura.com.LiterAlura.Services.dataConversor;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
 
-    private APIservice API = new APIservice();
-    private dataConversor dataConversor = new dataConversor();
-    private authorDataConversor authorDataConversor = new authorDataConversor();
-    private Scanner scanner = new Scanner(System.in);
+    private final APIservice API = new APIservice();
+    private final dataConversor dataConversor = new dataConversor();
+    private final authorDataConversor authorDataConversor = new authorDataConversor();
+    private final Scanner scanner = new Scanner(System.in);
     private final String urlAPI = "https://gutendex.com/books/";
-    private bookRepository booksRepository;
-    private authorRepository authorsRepository;
+    private final bookRepository booksRepository;
+    private final authorRepository authorsRepository;
     private List<Book> books;
     private List<Author> authors;
     private Optional<Author> searchedAuthor;
@@ -68,13 +69,13 @@ public class Principal {
                     showRegisterBooks();
                     break;
                 case 3:
-                    //showRegisterAuthors();
+                    showRegisterAuthors();
                     break;
                 case 4:
-                    //showLivingsAuthorsByYear();
+                    showLivingsAuthorsByYear();
                     break;
                 case 5:
-                    //showBooksByLanguage();
+                    showBooksByLanguage();
                     break;
                 case 6:
                     //searchAuthorByName();
@@ -195,5 +196,48 @@ public class Principal {
             System.out.println(e.getMessage());
             books = new ArrayList<>();
         }
+    }
+
+    //Option 3: Show the registered Authors searched
+    private void showRegisterAuthors() {
+        authors = authorsRepository.findAll();
+        authors.forEach(System.out::println);
+    }
+
+    //Option 4: Show the Living Authors by a certain date (year)
+    private void showLivingsAuthorsByYear() {
+        System.out.println("What year do you want to search?");
+        int year = scanner.nextInt();
+        authors = authorsRepository.findAll();
+        List<String> authorsNames = authors.stream()
+                .filter(a-> (a.getDateOfDeath() >= year) && (a.getDateOfBirth() <= year))
+                .map(Author::getName)
+                .toList();
+        authorsNames.forEach(System.out::println);
+    }
+
+    //Option 5: Show the books by language
+    private void showBooksByLanguage() {
+        books = booksRepository.findAll();
+        List<String> typeLanguages = books.stream()
+                .map(Book::getLanguage)
+                .distinct()
+                .toList();
+        typeLanguages.forEach(language -> {
+            switch (language){
+                case "en":
+                    System.out.println("en - english");
+                    break;
+                case "es":
+                    System.out.println("es - spanish");
+                    break;
+            }
+        });
+        System.out.println("\nWhat Language do you want to search?");
+        String languageSelected = scanner.nextLine();
+        List<Book> booksFounded = books.stream()
+                .filter(book -> book.getLanguage().contains(languageSelected))
+                .toList();
+        booksFounded.forEach(System.out::println);
     }
 }
