@@ -9,19 +9,19 @@ Develop a Book Catalog that offers textual interaction (via console) with users,
 ## :hammer:Project functionalities
 `Menu options`:
 
-1   -   Search a book with the Title
-2   -   Registered Books list
-3   -   Registered Authors list
-4   -   Living authors List by a certain date (year)
-5   -   Book List by language
-0   -   Exit the program
+1-   Search a book with the Title
+2-   Registered Books list
+3-   Registered Authors list
+4-   Living authors List by a certain date (year)
+5-   Book List by language
+0-   Exit the program
                     
 `Additional features`:
 
-6   -   Search Author by name
-7   -   Top 10 books from the API (online)
-8   -   Top 5 books from the DataBase
-9   -   Authors of public law
+6-   Search Author by name
+7-   Top 10 books from the API (online)
+8-   Top 5 books from the DataBase
+9-   Authors of public law
 
 ## :hammer:Open and run the project
 `Java development environment configuration`:
