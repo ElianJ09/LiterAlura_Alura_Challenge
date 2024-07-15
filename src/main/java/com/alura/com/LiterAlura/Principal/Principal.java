@@ -24,7 +24,6 @@ public class Principal {
     private final authorRepository authorsRepository;
     private List<Book> books;
     private List<Author> authors;
-    private Optional<Author> searchedAuthor;
 
     public Principal(bookRepository booksRepository, authorRepository athosRepository) {
         this.booksRepository = booksRepository;
@@ -107,11 +106,11 @@ public class Principal {
 
     //functions to get Books and Authors
     private bookData getBooksData(String bookName){
-        var json = APIservice.obtainData(urlAPI + "?search="+ bookName.replace(" ", "+"));
+        var json = API.obtainData(urlAPI + "?search="+ bookName.replace(" ", "+"));
         return dataConversor.obtainData(json, bookData.class);
     }
     private authorData getAuthorsData(String bookName) {
-        var json = APIservice.obtainData(urlAPI + "?search="+ bookName.replace(" ", "+"));
+        var json = API.obtainData(urlAPI + "?search="+ bookName.replace(" ", "+"));
         return authorDataConversor.obtainData(json, authorData.class);
     }
 
@@ -250,7 +249,7 @@ public class Principal {
     public void searchAuthorByName(){
         System.out.println("What name do you want to search?");
         var authorNameSelected = scanner.nextLine();
-        searchedAuthor = authorsRepository.findByNameContainingIgnoreCase(authorNameSelected);
+        Optional<Author> searchedAuthor = authorsRepository.findByNameContainingIgnoreCase(authorNameSelected);
         if(searchedAuthor.isPresent()){
             System.out.println(searchedAuthor.get());
         }else{
