@@ -261,7 +261,7 @@ public class Principal {
     //Option 7: Show the top 10 books in the API Gutendex
     public void showTop10BooksAPI() {
         try {
-            String json = APIservice.obtainData(urlAPI + "?sort");
+            String json = API.obtainData(urlAPI + "?sort");
 
             List<bookData> booksData = dataConversor.obtainArrayData(json, bookData.class);
             List<authorData> authorsData = authorDataConversor.obtainArrayData(json,authorData.class);
@@ -314,7 +314,7 @@ public class Principal {
     //Option 9: Show Authors with Public law
     public void showAuthorsPublicLaw(){
         try {
-            String json = APIservice.obtainData(urlAPI + "?sort");
+            String json = API.obtainData(urlAPI + "?sort");
 
             List<authorData> authorsData = authorDataConversor.obtainArrayData(json, authorData.class);
 
