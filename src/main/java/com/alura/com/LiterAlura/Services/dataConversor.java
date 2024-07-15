@@ -11,16 +11,19 @@ import java.util.List;
 public class dataConversor implements interfaceDataConversor {
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
-    public <data> data obtainData(String json, Class<data> dataClass) {
+    public <T> T obtainData(String json, Class<T> dataClass) {
         try {
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode resultsArray = rootNode.get("results");
 
-            if (resultsArray != null && !resultsArray.isEmpty()) {
+            if (!resultsArray.isNull() && resultsArray.isArray() && !resultsArray.isEmpty()) {
                 JsonNode firstResult = resultsArray.get(0);
-                return objectMapper.treeToValue(firstResult, dataClass);
+                System.out.println(firstResult);
+                T result = objectMapper.treeToValue(firstResult, dataClass);
+                System.out.println("Deserialized object: " + result);
+                return result;
             } else {
-                throw new RuntimeException("We cant find any authors in json!");
+                throw new RuntimeException("We cant find any book with that name in json!");
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -28,20 +31,20 @@ public class dataConversor implements interfaceDataConversor {
     }
 
     @Override
-    public <data> List<data> obtainArrayData(String json, Class<data> dataClass) {
+    public <T> List<T> obtainArrayData(String json, Class<T> dataClass) {
         try {
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode resultsArray = rootNode.get("results");
 
-            if (resultsArray != null && !resultsArray.isEmpty()) {
-                List<data> resultList = new ArrayList<>();
+            if (!resultsArray.isEmpty()) {
+                List<T> resultList = new ArrayList<>();
                 for (JsonNode node : resultsArray) {
-                    data result = objectMapper.treeToValue(node, dataClass);
+                    T result = objectMapper.treeToValue(node, dataClass);
                     resultList.add(result);
                 }
                 return resultList;
             } else {
-                throw new RuntimeException("We cant find any authors in array json!");
+                throw new RuntimeException("We cant find any book with that name in the array json!");
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

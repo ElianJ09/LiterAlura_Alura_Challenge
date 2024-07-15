@@ -12,12 +12,12 @@ public class authorDataConversor implements interfaceDataConversor {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public <data> data obtainData(String json, Class<data> dataClass) {
+    public <T> T obtainData(String json, Class<T> dataClass) {
         try {
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode resultsArray = rootNode.get("results");
 
-            if (resultsArray != null && !resultsArray.isEmpty()) {
+            if (!resultsArray.isEmpty()) {
                 JsonNode firstResult = resultsArray.get(0).get("authors").get(0);
                 return objectMapper.treeToValue(firstResult, dataClass);
             } else {
@@ -29,16 +29,16 @@ public class authorDataConversor implements interfaceDataConversor {
     }
 
     @Override
-    public <data> List<data> obtainArrayData(String json, Class<data> dataClass) {
+    public <T> List<T> obtainArrayData(String json, Class<T> dataClass) {
         try {
             JsonNode rootNode = objectMapper.readTree(json);
 
             JsonNode resultsArray = rootNode.get("results");
-            if (resultsArray != null && !resultsArray.isEmpty()) {
-                List<data> resultList = new ArrayList<>();
+            if (!resultsArray.isEmpty()) {
+                List<T> resultList = new ArrayList<>();
                 for (int i = 0; i < resultsArray.size(); i++) {
                     JsonNode firstResult = resultsArray.get(i).get("authors").get(0);
-                    data result = objectMapper.treeToValue(firstResult, dataClass);
+                    T result = objectMapper.treeToValue(firstResult, dataClass);
                     resultList.add(result);
                 }
                 return resultList;

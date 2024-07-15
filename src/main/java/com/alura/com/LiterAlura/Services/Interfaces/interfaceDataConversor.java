@@ -3,7 +3,7 @@ package com.alura.com.LiterAlura.Services.Interfaces;
 import java.util.List;
 
 public interface interfaceDataConversor {
-    <data> data obtainData(String json, Class<data> dataClass);
+    <T> T obtainData(String json, Class<T> dataClass);
 
-    <data> List<data> obtainArrayData(String json, Class<data> dataClass);
+    <T> List<T> obtainArrayData(String json, Class<T> dataClass);
 }
