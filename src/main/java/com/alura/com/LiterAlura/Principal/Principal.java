@@ -78,16 +78,16 @@ public class Principal {
                     showBooksByLanguage();
                     break;
                 case 6:
-                    //searchAuthorByName();
+                    searchAuthorByName();
                     break;
                 case 7:
-                    //showTop10BooksAPI();
+                    showTop10BooksAPI();
                     break;
                 case 8:
-                    //showTop5BooksDB();
+                    showTop5BooksDB();
                     break;
                 case 9:
-                    //showAuthorsPublicLaw();
+                    showAuthorsPublicLaw();
                     break;
                 case 0:
                     System.out.println("Thank you for using LiterAlura! \nExiting program...");
@@ -239,5 +239,107 @@ public class Principal {
                 .filter(book -> book.getLanguage().contains(languageSelected))
                 .toList();
         booksFounded.forEach(System.out::println);
+    }
+
+    //****************************************************************************
+    //*********************************EXTRAS*************************************
+    //****************************************************************************
+
+
+    // Option 6: Search Author by Name
+    public void searchAuthorByName(){
+        System.out.println("What name do you want to search?");
+        var authorNameSelected = scanner.nextLine();
+        searchedAuthor = authorsRepository.findByNameContainingIgnoreCase(authorNameSelected);
+        if(searchedAuthor.isPresent()){
+            System.out.println(searchedAuthor.get());
+        }else{
+            System.out.println("Author not found!");
+        }
+    }
+
+    //Option 7: Show the top 10 books in the API Gutendex
+    public void showTop10BooksAPI() {
+        try {
+            String json = APIservice.obtainData(urlAPI + "?sort");
+
+            List<bookData> booksData = dataConversor.obtainArrayData(json, bookData.class);
+            List<authorData> authorsData = authorDataConversor.obtainArrayData(json,authorData.class);
+
+            List<Book> books = new ArrayList<>();
+            for (int i = 0; i < booksData.size(); i++) {
+                Author author = new Author(
+                        authorsData.get(i).name(),
+                        authorsData.get(i).dateOfBirth(),
+                        authorsData.get(i).dateOfDeath());
+
+                Book book = new Book(
+                        booksData.get(i).title(),
+                        author,
+                        booksData.get(i).language(),
+                        booksData.get(i).downloads());
+                books.add(book);
+            }
+
+            books.sort(Comparator.comparingDouble(Book::getDownloads).reversed());
+
+            List<Book> top10 = books.subList(0, Math.min(10, books.size()));
+
+            for (int i = 1; i <= top10.size(); i++) {
+                System.out.println((i) + ". " + top10.get(i));
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    //Option 8: Show top 5 books saved in the Data base
+    public void showTop5BooksDB(){
+        try{
+            List<Book> books = booksRepository.findAll();
+            List<Book> booksInOrder = books.stream()
+                    .sorted(Comparator.comparingDouble(Book::getDownloads).reversed())
+                    .collect(Collectors.toList());
+            List<Book> top5 = booksInOrder.subList(0, Math.min(5, booksInOrder.size()));
+            for (int i = 1; i <= top5.size(); i++) {
+                System.out.println((i) + ". " + top5.get(i));
+            }
+        }catch(NullPointerException e){
+            System.out.println(e.getMessage());
+            books = new ArrayList<>();
+        }
+    }
+
+    //Option 9: Show Authors with Public law
+    public void showAuthorsPublicLaw(){
+        try {
+            String json = APIservice.obtainData(urlAPI + "?sort");
+
+            List<authorData> authorsData = authorDataConversor.obtainArrayData(json, authorData.class);
+
+            Map<String, Author> autoresMap = new HashMap<>();
+
+            for (authorData authorData : authorsData) {
+                String nameAuthor = authorData.name();
+                Author AuthorSelected = autoresMap.computeIfAbsent(nameAuthor, n -> new Author(n, authorData.dateOfBirth(), authorData.dateOfDeath()));
+
+                List<Book> booksArray = new ArrayList<>();
+                AuthorSelected.setBooks(booksArray);
+            }
+
+            List<Author> authorsInOrder = autoresMap.values().stream()
+                    .filter(a -> a.getDateOfDeath() < 1954)
+                    .collect(Collectors.toList());
+
+            List<Author> Top10Authors = authorsInOrder.subList(0, Math.min(10, authorsInOrder.size()));
+
+            for (int i = 1; i <= Top10Authors.size(); i++) {
+                System.out.println((i) + ". " + Top10Authors.get(i).getName()+"/n" + ", Date of death: "+ Top10Authors.get(i).getDateOfDeath());
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
